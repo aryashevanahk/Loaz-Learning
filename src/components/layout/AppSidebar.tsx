@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -19,14 +19,14 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   ChevronDown,
   ChevronRight,
@@ -37,9 +37,9 @@ import {
   Sparkles,
   Clock,
   Bell,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { mainNavItems, bottomNavItems } from '@/config/navigation';
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { mainNavItems, bottomNavItems } from "@/config/navigation";
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -49,24 +49,20 @@ export function AppSidebar() {
     setExpandedItems((prev) =>
       prev.includes(title)
         ? prev.filter((item) => item !== title)
-        : [...prev, title]
+        : [...prev, title],
     );
   };
 
   const isActive = (href: string) => {
-    if (!pathname || !href) return false;
-    if (href === '/dashboard') {
-      return pathname === '/dashboard';
-    }
-    return pathname === href || pathname?.startsWith(href + '/');
+    return pathname === href || pathname?.startsWith(href + "/");
   };
 
   // Format today's date
   const today = new Date();
-  const formattedDate = today.toLocaleDateString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
+  const formattedDate = today.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
   });
 
   return (
@@ -74,8 +70,8 @@ export function AppSidebar() {
       className="border-r border-gray-200/50 dark:border-gray-800/50"
       style={
         {
-          '--sidebar-width': '260px',
-          '--sidebar-width-mobile': '280px',
+          "--sidebar-width": "260px",
+          "--sidebar-width-mobile": "280px",
         } as React.CSSProperties
       }
     >
@@ -160,9 +156,9 @@ export function AppSidebar() {
                       <SidebarMenuButton
                         onClick={() => toggleExpand(item.title)}
                         className={cn(
-                          'hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all',
+                          "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
                           isActive(item.href) &&
-                            'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                            "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
                         )}
                       >
                         <item.icon className="h-4 w-4" />
@@ -174,8 +170,8 @@ export function AppSidebar() {
                         )}
                         <ChevronRight
                           className={cn(
-                            'h-4 w-4 transition-transform',
-                            expandedItems.includes(item.title) && 'rotate-90'
+                            "h-4 w-4 transition-transform",
+                            expandedItems.includes(item.title) && "rotate-90",
                           )}
                         />
                       </SidebarMenuButton>
@@ -184,20 +180,21 @@ export function AppSidebar() {
                           {item.children.map((child) => (
                             <SidebarMenuSubItem key={child.title}>
                               <SidebarMenuSubButton
+                                render={
+                                  <Link
+                                    href={child.href}
+                                    className="flex items-center gap-2 w-full"
+                                  >
+                                    <child.icon className="h-3 w-3" />
+                                    <span>{child.title}</span>
+                                  </Link>
+                                }
                                 className={cn(
-                                  'hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all',
+                                  "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
                                   isActive(child.href) &&
-                                    'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                                    "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
                                 )}
-                              >
-                                <Link 
-                                  href={child.href} 
-                                  className="flex items-center gap-2 w-full"
-                                >
-                                  <child.icon className="h-3 w-3" />
-                                  <span>{child.title}</span>
-                                </Link>
-                              </SidebarMenuSubButton>
+                              />
                             </SidebarMenuSubItem>
                           ))}
                         </SidebarMenuSub>
@@ -205,25 +202,26 @@ export function AppSidebar() {
                     </>
                   ) : (
                     <SidebarMenuButton
+                      render={
+                        <Link
+                          href={item.href}
+                          className="flex items-center gap-2 w-full"
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span className="flex-1">{item.title}</span>
+                          {item.badge && (
+                            <SidebarMenuBadge className="bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+                              {item.badge}
+                            </SidebarMenuBadge>
+                          )}
+                        </Link>
+                      }
                       className={cn(
-                        'hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all',
+                        "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
                         isActive(item.href) &&
-                          'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                          "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
                       )}
-                    >
-                      <Link 
-                        href={item.href} 
-                        className="flex items-center gap-2 w-full"
-                      >
-                        <item.icon className="h-4 w-4" />
-                        <span className="flex-1">{item.title}</span>
-                        {item.badge && (
-                          <SidebarMenuBadge className="bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-                            {item.badge}
-                          </SidebarMenuBadge>
-                        )}
-                      </Link>
-                    </SidebarMenuButton>
+                    />
                   )}
                 </SidebarMenuItem>
               ))}
@@ -256,20 +254,21 @@ export function AppSidebar() {
           {bottomNavItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
+                render={
+                  <Link
+                    href={item.href}
+                    className="flex items-center gap-2 w-full"
+                  >
+                    <item.icon className="h-4 w-4" />
+                    <span>{item.title}</span>
+                  </Link>
+                }
                 className={cn(
-                  'hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all',
+                  "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
                   isActive(item.href) &&
-                    'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                    "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
                 )}
-              >
-                <Link 
-                  href={item.href} 
-                  className="flex items-center gap-2 w-full"
-                >
-                  <item.icon className="h-4 w-4" />
-                  <span>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
+              />
             </SidebarMenuItem>
           ))}
           <SidebarMenuItem>
