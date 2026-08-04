@@ -54,6 +54,10 @@ export function AppSidebar() {
   };
 
   const isActive = (href: string) => {
+    if (!pathname || !href) return false;
+    if (href === '/dashboard') {
+      return pathname === '/dashboard';
+    }
     return pathname === href || pathname?.startsWith(href + '/');
   };
 
@@ -186,7 +190,10 @@ export function AppSidebar() {
                                     'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                                 )}
                               >
-                                <Link href={child.href} className="flex items-center gap-2 w-full">
+                                <Link 
+                                  href={child.href} 
+                                  className="flex items-center gap-2 w-full"
+                                >
                                   <child.icon className="h-3 w-3" />
                                   <span>{child.title}</span>
                                 </Link>
@@ -204,7 +211,10 @@ export function AppSidebar() {
                           'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                       )}
                     >
-                      <Link href={item.href} className="flex items-center gap-2 w-full">
+                      <Link 
+                        href={item.href} 
+                        className="flex items-center gap-2 w-full"
+                      >
                         <item.icon className="h-4 w-4" />
                         <span className="flex-1">{item.title}</span>
                         {item.badge && (
@@ -252,7 +262,10 @@ export function AppSidebar() {
                     'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
                 )}
               >
-                <Link href={item.href} className="flex items-center gap-2 w-full">
+                <Link 
+                  href={item.href} 
+                  className="flex items-center gap-2 w-full"
+                >
                   <item.icon className="h-4 w-4" />
                   <span>{item.title}</span>
                 </Link>
