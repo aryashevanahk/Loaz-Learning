@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Course, CourseInput } from '../types/course.types';
-import { CourseItem } from './CourseItem';
-import { CourseForm } from './CourseForm';
-import { Button } from '@/components/ui/Button';
-import { Modal } from '@/components/ui/Modal';
+import { useState } from "react";
+import { Course, CourseInput } from "../types/course.types";
+import { CourseItem } from "./CourseItem";
+import { CourseForm } from "./CourseForm";
+import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/ui/modal";
 
 interface CourseListProps {
   courses: Course[];
@@ -15,10 +15,10 @@ interface CourseListProps {
 
 export function CourseList({ courses, onDelete, onUpdate }: CourseListProps) {
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
-  const [filter, setFilter] = useState<string>('all');
+  const [filter, setFilter] = useState<string>("all");
 
-  const filteredCourses = courses.filter(course => {
-    if (filter === 'all') return true;
+  const filteredCourses = courses.filter((course) => {
+    if (filter === "all") return true;
     return course.category === filter;
   });
 
@@ -36,46 +36,46 @@ export function CourseList({ courses, onDelete, onUpdate }: CourseListProps) {
   // Hitung jumlah per kategori
   const counts = {
     all: courses.length,
-    Tugas: courses.filter(c => c.category === 'Tugas').length,
-    Materi: courses.filter(c => c.category === 'Materi').length,
-    UTS: courses.filter(c => c.category === 'UTS').length,
-    UAS: courses.filter(c => c.category === 'UAS').length,
+    Tugas: courses.filter((c) => c.category === "Tugas").length,
+    Materi: courses.filter((c) => c.category === "Materi").length,
+    UTS: courses.filter((c) => c.category === "UTS").length,
+    UAS: courses.filter((c) => c.category === "UAS").length,
   };
 
   return (
     <div>
       <div className="mb-4 flex gap-2 flex-wrap">
-        <Button 
-          variant={filter === 'all' ? 'primary' : 'secondary'}
-          onClick={() => setFilter('all')}
+        <Button
+          variant={filter === "all" ? "primary" : "secondary"}
+          onClick={() => setFilter("all")}
           size="sm"
         >
           Semua ({counts.all})
         </Button>
-        <Button 
-          variant={filter === 'Tugas' ? 'primary' : 'secondary'}
-          onClick={() => setFilter('Tugas')}
+        <Button
+          variant={filter === "Tugas" ? "primary" : "secondary"}
+          onClick={() => setFilter("Tugas")}
           size="sm"
         >
           Tugas ({counts.Tugas})
         </Button>
-        <Button 
-          variant={filter === 'Materi' ? 'primary' : 'secondary'}
-          onClick={() => setFilter('Materi')}
+        <Button
+          variant={filter === "Materi" ? "primary" : "secondary"}
+          onClick={() => setFilter("Materi")}
           size="sm"
         >
           Materi ({counts.Materi})
         </Button>
-        <Button 
-          variant={filter === 'UTS' ? 'primary' : 'secondary'}
-          onClick={() => setFilter('UTS')}
+        <Button
+          variant={filter === "UTS" ? "primary" : "secondary"}
+          onClick={() => setFilter("UTS")}
           size="sm"
         >
           UTS ({counts.UTS})
         </Button>
-        <Button 
-          variant={filter === 'UAS' ? 'primary' : 'secondary'}
-          onClick={() => setFilter('UAS')}
+        <Button
+          variant={filter === "UAS" ? "primary" : "secondary"}
+          onClick={() => setFilter("UAS")}
           size="sm"
         >
           UAS ({counts.UAS})
@@ -86,7 +86,7 @@ export function CourseList({ courses, onDelete, onUpdate }: CourseListProps) {
         {filteredCourses.length === 0 ? (
           <p className="text-center text-gray-500 py-8">Tidak ada data</p>
         ) : (
-          filteredCourses.map(course => (
+          filteredCourses.map((course) => (
             <CourseItem
               key={course.id}
               course={course}

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/Button';
+import { Button } from "@/components/ui/button";
 
 interface TimetableControlsProps {
   currentDate: Date;
@@ -20,8 +20,8 @@ export function TimetableControls({
     start.setDate(start.getDate() - start.getDay() + 1);
     const end = new Date(start);
     end.setDate(end.getDate() + 6);
-    
-    return `${start.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })} - ${end.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+
+    return `${start.toLocaleDateString("id-ID", { day: "numeric", month: "short" })} - ${end.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}`;
   };
 
   return (
@@ -30,7 +30,9 @@ export function TimetableControls({
         ◀ Previous
       </Button>
       <div className="flex items-center gap-4">
-        <span className="font-medium dark:text-white text-sm md:text-base">{getWeekRange()}</span>
+        <span className="font-medium dark:text-white text-sm md:text-base">
+          {getWeekRange()}
+        </span>
         <Button variant="secondary" size="sm" onClick={onToday}>
           Today
         </Button>

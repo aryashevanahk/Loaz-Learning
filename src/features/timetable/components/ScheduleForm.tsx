@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
-import { DAYS_OF_WEEK } from '../types/timetable.types';
+import { useState, type FormEvent } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { DAYS_OF_WEEK } from "../types/timetable.types";
 
 export interface ScheduleFormData {
   title: string;
@@ -21,18 +21,22 @@ interface ScheduleFormProps {
   onCancel: () => void;
 }
 
-export function ScheduleForm({ initialData, onSubmit, onCancel }: ScheduleFormProps) {
+export function ScheduleForm({
+  initialData,
+  onSubmit,
+  onCancel,
+}: ScheduleFormProps) {
   const [formData, setFormData] = useState<ScheduleFormData>({
-    title: initialData?.title || '',
-    day: initialData?.day || 'Senin',
-    startTime: initialData?.startTime || '08:00',
-    endTime: initialData?.endTime || '09:00',
-    location: initialData?.location || '',
-    color: initialData?.color || '#4F46E5',
-    description: initialData?.description || '',
+    title: initialData?.title || "",
+    day: initialData?.day || "Senin",
+    startTime: initialData?.startTime || "08:00",
+    endTime: initialData?.endTime || "09:00",
+    location: initialData?.location || "",
+    color: initialData?.color || "#4F46E5",
+    description: initialData?.description || "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(formData);
   };
@@ -46,7 +50,7 @@ export function ScheduleForm({ initialData, onSubmit, onCancel }: ScheduleFormPr
         required
         placeholder="Contoh: Matematika"
       />
-      
+
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Hari
@@ -56,8 +60,10 @@ export function ScheduleForm({ initialData, onSubmit, onCancel }: ScheduleFormPr
           onChange={(e) => setFormData({ ...formData, day: e.target.value })}
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         >
-          {DAYS_OF_WEEK.map(day => (
-            <option key={day} value={day}>{day}</option>
+          {DAYS_OF_WEEK.map((day) => (
+            <option key={day} value={day}>
+              {day}
+            </option>
           ))}
         </select>
       </div>
@@ -67,14 +73,18 @@ export function ScheduleForm({ initialData, onSubmit, onCancel }: ScheduleFormPr
           label="Jam Mulai"
           type="time"
           value={formData.startTime}
-          onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, startTime: e.target.value })
+          }
           required
         />
         <Input
           label="Jam Selesai"
           type="time"
           value={formData.endTime}
-          onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, endTime: e.target.value })
+          }
           required
         />
       </div>
@@ -101,13 +111,15 @@ export function ScheduleForm({ initialData, onSubmit, onCancel }: ScheduleFormPr
       <Input
         label="Deskripsi"
         value={formData.description}
-        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+        onChange={(e) =>
+          setFormData({ ...formData, description: e.target.value })
+        }
         placeholder="Deskripsi tambahan"
       />
 
       <div className="flex gap-2 mt-4">
         <Button type="submit" variant="primary">
-          {initialData ? 'Update' : 'Tambah'}
+          {initialData ? "Update" : "Tambah"}
         </Button>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Batal

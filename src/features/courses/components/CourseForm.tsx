@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
-import { Course, CourseInput } from '../types/course.types';
+import { useState, type FormEvent } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Course, CourseInput } from "../types/course.types";
 
 interface CourseFormProps {
   initialData?: Course;
@@ -11,15 +11,19 @@ interface CourseFormProps {
   onCancel: () => void;
 }
 
-export function CourseForm({ initialData, onSubmit, onCancel }: CourseFormProps) {
+export function CourseForm({
+  initialData,
+  onSubmit,
+  onCancel,
+}: CourseFormProps) {
   const [formData, setFormData] = useState<CourseInput>({
-    pertemuan: initialData?.pertemuan || '',
-    title: initialData?.title || '',
-    description: initialData?.description || '',
-    category: initialData?.category || 'Materi',
+    pertemuan: initialData?.pertemuan || "",
+    title: initialData?.title || "",
+    description: initialData?.description || "",
+    category: initialData?.category || "Materi",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(formData);
   };
@@ -29,7 +33,9 @@ export function CourseForm({ initialData, onSubmit, onCancel }: CourseFormProps)
       <Input
         label="Pertemuan"
         value={formData.pertemuan}
-        onChange={(e) => setFormData({ ...formData, pertemuan: e.target.value })}
+        onChange={(e) =>
+          setFormData({ ...formData, pertemuan: e.target.value })
+        }
         required
         placeholder="Contoh: Pertemuan 6"
       />
@@ -43,7 +49,9 @@ export function CourseForm({ initialData, onSubmit, onCancel }: CourseFormProps)
       <Input
         label="Deskripsi"
         value={formData.description}
-        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+        onChange={(e) =>
+          setFormData({ ...formData, description: e.target.value })
+        }
         required
         placeholder="Masukkan deskripsi course"
       />
@@ -53,7 +61,12 @@ export function CourseForm({ initialData, onSubmit, onCancel }: CourseFormProps)
         </label>
         <select
           value={formData.category}
-          onChange={(e) => setFormData({ ...formData, category: e.target.value as Course['category'] })}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              category: e.target.value as Course["category"],
+            })
+          }
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="Materi">Materi</option>
@@ -64,7 +77,7 @@ export function CourseForm({ initialData, onSubmit, onCancel }: CourseFormProps)
       </div>
       <div className="flex gap-2">
         <Button type="submit" variant="primary">
-          {initialData ? 'Update' : 'Tambah'}
+          {initialData ? "Update" : "Tambah"}
         </Button>
         <Button type="button" variant="secondary" onClick={onCancel}>
           Batal

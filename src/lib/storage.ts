@@ -1,26 +1,26 @@
-import { Course } from '@/types';
-import { CourseInput } from '@/features/courses/types/course.types';
+import { Course } from "@/types";
+import { CourseInput } from "@/features/courses/types/course.types";
 
-const STORAGE_KEY = 'courses_data';
+const STORAGE_KEY = "courses_data";
 
 export class StorageService {
   static getCourses(): Course[] {
-    if (typeof window === 'undefined') return [];
+    if (typeof window === "undefined") return [];
     try {
       const data = localStorage.getItem(STORAGE_KEY);
       return data ? JSON.parse(data) : [];
     } catch (error) {
-      console.error('Error reading from localStorage:', error);
+      console.error("Error reading from localStorage:", error);
       return [];
     }
   }
 
   static saveCourses(courses: Course[]): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(courses));
     } catch (error) {
-      console.error('Error saving to localStorage:', error);
+      console.error("Error saving to localStorage:", error);
     }
   }
 
@@ -39,9 +39,9 @@ export class StorageService {
 
   static updateCourse(id: string, updates: CourseInput): Course | null {
     const courses = this.getCourses();
-    const index = courses.findIndex(c => c.id === id);
+    const index = courses.findIndex((c) => c.id === id);
     if (index === -1) return null;
-    
+
     courses[index] = {
       ...courses[index],
       ...updates,
@@ -53,9 +53,35 @@ export class StorageService {
 
   static deleteCourse(id: string): boolean {
     const courses = this.getCourses();
-    const filtered = courses.filter(c => c.id !== id);
+    const filtered = courses.filter((c) => c.id !== id);
     if (filtered.length === courses.length) return false;
     this.saveCourses(filtered);
     return true;
+  }
+
+  static generateDefaultCourses(): Course[] {
+    return [
+      {
+        id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
+        pertemuan: "Pertemuan 1",
+        title: "Pengantar Pemrograman",
+        description:
+          "Mempelajari konsep dasar pemrograman dan struktur kontrol.",
+        category: "Materi",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: crypto.randomUUID
+          ? crypto.randomUUID()
+          : (Date.now() + 1).toString(),
+        pertemuan: "Pertemuan 2",
+        title: "Dasar Data dan Algoritma",
+        description: "Pengenalan tipe data, array, dan algoritma sederhana.",
+        category: "Materi",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
   }
 }

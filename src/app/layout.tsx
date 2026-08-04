@@ -1,13 +1,16 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import '@/styles/globals.css';
 import { ThemeProvider } from '@/providers/ThemeProvider';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/layout/AppSidebar';
+import { cn } from '@/lib/utils';
+import '@/styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'LoazLearning - Dashboard',
-  description: 'Platform Manajemen Pembelajaran',
+  title: 'Loaz Learning Dashboard',
+  description: 'Modern learning management system',
 };
 
 export default function RootLayout({
@@ -16,25 +19,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id">
-      <body className={`${inter.className} min-h-screen bg-gray-50 dark:bg-gray-900`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(inter.className, 'antialiased')}>
         <ThemeProvider>
-          <nav className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
-            <div className="container mx-auto px-4 py-4 max-w-6xl">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">📅</span>
-                  <h1 className="text-xl font-semibold dark:text-white">LoazLearning</h1>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-sm text-gray-600 dark:text-gray-300">Timetable</span>
-                </div>
-              </div>
-            </div>
-          </nav>
-          <main className="container mx-auto px-4 py-8 max-w-6xl">
-            {children}
-          </main>
+          <SidebarProvider>
+            <AppSidebar />
+            <main className="flex-1 overflow-x-hidden bg-gray-50 dark:bg-gray-900 transition-all duration-300">
+              {children}
+            </main>
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
