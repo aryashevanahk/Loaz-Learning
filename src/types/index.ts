@@ -1,32 +1,44 @@
-export interface Course {
+/**
+ * Global Types
+ * Export semua tipe global di sini
+ */
+
+// Feature Types
+export type * from '@/features/courses/types/course.types';
+export type * from '@/features/timetable/types/timetable.types';
+export type * from '@/features/semesters/types/semester.types';
+
+// Common Types
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface BaseEntity {
   id: string;
-  pertemuan: string;
-  title: string;
-  description: string;
-  category: 'Tugas' | 'Materi' | 'UTS' | 'UAS';
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface Schedule {
-  id: string;
-  courseId: string;
-  title: string;
-  day: 'Senin' | 'Selasa' | 'Rabu' | 'Kamis' | 'Jumat' | 'Sabtu' | 'Minggu';
-  startTime: string;
-  endTime: string;
-  location?: string;
-  color?: string;
-  description?: string;
+export type SortOrder = 'asc' | 'desc';
+
+export interface SortOptions {
+  field: string;
+  order: SortOrder;
 }
 
-export interface TimetableEvent {
-  id: string;
-  title: string;
-  start: Date;
-  end: Date;
-  color?: string;
-  location?: string;
-  description?: string;
-  courseId?: string;
+export interface FilterOptions {
+  search?: string;
+  limit?: number;
+  offset?: number;
 }

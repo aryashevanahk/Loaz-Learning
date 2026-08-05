@@ -26,7 +26,7 @@ export function TimetableGrid({ events, onEditEvent, onDeleteEvent }: TimetableG
 
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-[800px]">
+      <div className="min-w-200">
         {/* Header */}
         <div className="grid grid-cols-8 gap-1 mb-1">
           <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded-tl-lg font-semibold text-sm text-gray-500 dark:text-gray-400">
@@ -53,7 +53,7 @@ export function TimetableGrid({ events, onEditEvent, onDeleteEvent }: TimetableG
               return (
                 <div
                   key={`${day}-${hour}`}
-                  className="min-h-[60px] p-1 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded relative"
+                  className="min-h-15 p-1 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded relative"
                 >
                   {dayEvents.map(event => (
                     <div
