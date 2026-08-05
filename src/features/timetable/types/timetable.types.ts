@@ -7,7 +7,7 @@ export interface TimetableEvent {
   id: string;
   title: string;
   courseId?: string;
-  semesterId?: string; // Tambahan: relasi ke Semester
+  semesterId?: string;
   day: string; // 'Monday', 'Tuesday', etc.
   startTime: string; // '08:00'
   endTime: string; // '10:00'
@@ -50,3 +50,19 @@ export const TIME_SLOTS = [
 ] as const;
 
 export type TimeSlot = typeof TIME_SLOTS[number];
+
+// Color presets untuk konsistensi
+export const COLOR_PRESETS = [
+  '#4F46E5', // Indigo
+  '#7C3AED', // Purple
+  '#EC4899', // Pink
+  '#EF4444', // Red
+  '#F59E0B', // Amber
+  '#10B981', // Emerald
+  '#06B6D4', // Cyan
+  '#3B82F6', // Blue
+  '#8B5CF6', // Violet
+  '#F472B6', // Pink-400
+] as const;
+
+export type ColorPreset = typeof COLOR_PRESETS[number];

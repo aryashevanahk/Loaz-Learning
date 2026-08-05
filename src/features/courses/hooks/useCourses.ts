@@ -19,6 +19,7 @@ interface UseCoursesReturn {
   getCourseById: (id: string) => Course | null;
   filterCourses: (filter: CourseFilter) => Course[];
   refreshCourses: () => void;
+  initializeDefaultData: () => void;
 }
 
 export function useCourses(): UseCoursesReturn {
@@ -36,7 +37,6 @@ export function useCourses(): UseCoursesReturn {
     };
   }, []);
 
-  // Define loadCourses BEFORE useEffect
   const loadCourses = useCallback(() => {
     try {
       if (!isMounted.current) return;
@@ -76,6 +76,11 @@ export function useCourses(): UseCoursesReturn {
   const refreshCourses = useCallback(() => {
     loadCourses();
   }, [loadCourses]);
+
+  const initializeDefaultData = useCallback(() => {
+    courseService.initializeDefaultData();
+    refreshCourses();
+  }, [refreshCourses]);
 
   const addCourse = useCallback(async (data: CreateCourseDTO): Promise<Course> => {
     try {
@@ -200,5 +205,6 @@ export function useCourses(): UseCoursesReturn {
     getCourseById,
     filterCourses,
     refreshCourses,
+    initializeDefaultData,
   };
 }

@@ -73,14 +73,6 @@ class TimetableService {
   }
 
   /**
-   * Get events by semester ID
-   */
-  getBySemesterId(semesterId: string): TimetableEvent[] {
-    const events = this.getAll();
-    return events.filter(e => e.semesterId === semesterId);
-  }
-
-  /**
    * Create new event
    */
   create(data: CreateTimetableEventDTO): TimetableEvent {
@@ -136,15 +128,21 @@ class TimetableService {
 
   /**
    * Initialize default data
+   * Course ID akan di-refresh setelah course service diinisialisasi
    */
-  initializeDefaultData(): void {
+  initializeDefaultData(courseIds?: string[]): void {
     const events = this.getAll();
     
     if (events.length === 0) {
+      // Gunakan ID yang diberikan atau fallback ke string kosong
+      const cs101Id = courseIds?.[0] || '1';
+      const cs201Id = courseIds?.[1] || '2';
+      const cs301Id = courseIds?.[2] || '3';
+      
       const defaultEvents: CreateTimetableEventDTO[] = [
         {
           title: 'Introduction to Computer Science',
-          courseId: '1',
+          courseId: cs101Id,
           semesterId: '1',
           day: 'Monday',
           startTime: '08:00',
@@ -156,7 +154,7 @@ class TimetableService {
         },
         {
           title: 'Data Structures',
-          courseId: '2',
+          courseId: cs201Id,
           semesterId: '1',
           day: 'Monday',
           startTime: '10:00',
@@ -168,7 +166,7 @@ class TimetableService {
         },
         {
           title: 'Algorithms',
-          courseId: '3',
+          courseId: cs301Id,
           semesterId: '1',
           day: 'Wednesday',
           startTime: '08:00',

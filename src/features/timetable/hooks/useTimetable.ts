@@ -21,6 +21,8 @@ interface UseTimetableReturn {
   goToToday: () => void;
   filterEvents: (filter: TimetableFilter) => TimetableEvent[];
   refreshEvents: () => void;
+  getEventsByDay: (day: string) => TimetableEvent[];
+  getEventsBySemester: (semesterId: string) => TimetableEvent[];
 }
 
 export function useTimetable(): UseTimetableReturn {
@@ -39,7 +41,6 @@ export function useTimetable(): UseTimetableReturn {
     };
   }, []);
 
-  // Define loadEvents BEFORE useEffect
   const loadEvents = useCallback(() => {
     try {
       if (!isMounted.current) return;
@@ -196,6 +197,14 @@ export function useTimetable(): UseTimetableReturn {
     return filtered;
   }, [events]);
 
+  const getEventsByDay = useCallback((day: string): TimetableEvent[] => {
+    return events.filter(e => e.day === day);
+  }, [events]);
+
+  const getEventsBySemester = useCallback((semesterId: string): TimetableEvent[] => {
+    return events.filter(e => e.semesterId === semesterId);
+  }, [events]);
+
   return {
     events,
     loading,
@@ -210,5 +219,7 @@ export function useTimetable(): UseTimetableReturn {
     goToToday,
     filterEvents,
     refreshEvents,
+    getEventsByDay,
+    getEventsBySemester,
   };
 }
