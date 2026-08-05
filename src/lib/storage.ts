@@ -1,5 +1,4 @@
-import { Course } from "@/types";
-import { CourseInput } from "@/features/courses/types/course.types";
+import { Course, CreateCourseDTO } from "@/features/courses/types/course.types";
 
 const STORAGE_KEY = "courses_data";
 
@@ -24,7 +23,7 @@ export class StorageService {
     }
   }
 
-  static addCourse(course: CourseInput): Course {
+  static addCourse(course: CreateCourseDTO): Course {
     const courses = this.getCourses();
     const newCourse: Course = {
       ...course,
@@ -37,7 +36,7 @@ export class StorageService {
     return newCourse;
   }
 
-  static updateCourse(id: string, updates: CourseInput): Course | null {
+  static updateCourse(id: string, updates: CreateCourseDTO): Course | null {
     const courses = this.getCourses();
     const index = courses.findIndex((c) => c.id === id);
     if (index === -1) return null;
@@ -63,11 +62,15 @@ export class StorageService {
     return [
       {
         id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
-        pertemuan: "Pertemuan 1",
-        title: "Pengantar Pemrograman",
-        description:
-          "Mempelajari konsep dasar pemrograman dan struktur kontrol.",
-        category: "Materi",
+        code: "CS101",
+        name: "Introduction to Computer Science",
+        description: "Basic concepts of programming and problem solving.",
+        credits: 3,
+        semesterId: "1",
+        instructor: "Dr. Smith",
+        schedule: "Mon/Wed 08:00-10:00",
+        room: "Room 101",
+        color: "#4F46E5",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -75,10 +78,16 @@ export class StorageService {
         id: crypto.randomUUID
           ? crypto.randomUUID()
           : (Date.now() + 1).toString(),
-        pertemuan: "Pertemuan 2",
-        title: "Dasar Data dan Algoritma",
-        description: "Pengenalan tipe data, array, dan algoritma sederhana.",
-        category: "Materi",
+        code: "CS201",
+        name: "Data Structures",
+        description:
+          "Introduction to data structures and efficient algorithms.",
+        credits: 4,
+        semesterId: "1",
+        instructor: "Prof. Johnson",
+        schedule: "Mon/Wed 10:00-12:00",
+        room: "Room 102",
+        color: "#7C3AED",
         createdAt: new Date(),
         updatedAt: new Date(),
       },

@@ -1,51 +1,64 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useTimetable } from '@/features/timetable/hooks/useTimetable';
-import { TimetableView } from '@/features/timetable/components/TimetableView';
-import { TimetableService } from '@/features/timetable/services/timetableService';
-import { 
-  Calendar, 
-  ChevronRight, 
-  Plus, 
-  Search, 
-  Bell, 
+import { useEffect, useState } from "react";
+import { useTimetable } from "@/features/timetable/hooks/useTimetable";
+import { TimetableView } from "@/features/timetable/components/TimetableView";
+import { timetableService } from "@/features/timetable/services/timetableService";
+import {
+  Calendar,
+  ChevronRight,
+  Plus,
+  Search,
+  Bell,
   User,
   Sparkles,
   Clock,
-  TrendingUp
-} from 'lucide-react';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+  TrendingUp,
+} from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function DashboardPage() {
-  const { 
-    events, 
-    loading, 
-    currentDate, 
-    addSchedule, 
-    updateSchedule, 
+  const {
+    events,
+    loading,
+    currentDate,
+    semesterId,
+    setSemesterId,
+    addSchedule,
+    updateSchedule,
     deleteSchedule,
     changeWeek,
-    goToToday 
+    goToToday,
   } = useTimetable();
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<'week' | 'month'>('week');
+  const handleAddSchedule = async () => {
+    await addSchedule({
+      title: "New Event",
+      day: new Date().toLocaleDateString("en-US", { weekday: "long" }),
+      startTime: "08:00",
+      endTime: "09:00",
+      location: "",
+      instructor: "",
+      color: "#4F46E5",
+      notes: "",
+      semesterId,
+    });
+  };
+  const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState<"week" | "month">("week");
 
   useEffect(() => {
     const initData = async () => {
-      await TimetableService.initializeDefaultData();
+      await timetableService.initializeDefaultData();
     };
     initData();
   }, []);
 
   // Hitung statistik
   const totalEvents = events.length;
-  const todayEvents = events.filter(e => {
-    const today = new Date();
-    const eventDate = new Date(e.start);
-    return eventDate.toDateString() === today.toDateString();
+  const todayDayName = new Date().toLocaleDateString("en-US", {
+    weekday: "long",
   });
+  const todayEvents = events.filter((e) => e.day === todayDayName);
 
   if (loading) {
     return (
@@ -56,7 +69,9 @@ export default function DashboardPage() {
             <Sparkles className="w-6 h-6 text-blue-500 animate-pulse" />
           </div>
         </div>
-        <p className="mt-4 text-sm text-gray-500 dark:text-gray-400 font-medium">Loading your schedule...</p>
+        <p className="mt-4 text-sm text-gray-500 dark:text-gray-400 font-medium">
+          Loading your schedule...
+        </p>
       </div>
     );
   }
@@ -80,10 +95,10 @@ export default function DashboardPage() {
                       Dashboard
                     </h1>
                     <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-                      {new Date().toLocaleDateString('en-US', { 
-                        weekday: 'long', 
-                        month: 'long', 
-                        day: 'numeric' 
+                      {new Date().toLocaleDateString("en-US", {
+                        weekday: "long",
+                        month: "long",
+                        day: "numeric",
                       })}
                     </p>
                   </div>
@@ -168,14 +183,7 @@ export default function DashboardPage() {
                   This Week
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white mt-0.5">
-                  {events.filter(e => {
-                    const weekStart = new Date(currentDate);
-                    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-                    const weekEnd = new Date(weekStart);
-                    weekEnd.setDate(weekEnd.getDate() + 7);
-                    const eventDate = new Date(e.start);
-                    return eventDate >= weekStart && eventDate < weekEnd;
-                  }).length}
+                  {events.length}
                 </p>
               </div>
               <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -205,21 +213,21 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2 bg-white dark:bg-gray-800/50 rounded-xl p-1 border border-gray-200/50 dark:border-gray-700/50">
             <button
-              onClick={() => setViewMode('week')}
+              onClick={() => setViewMode("week")}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                viewMode === 'week'
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50'
+                viewMode === "week"
+                  ? "bg-blue-500 text-white shadow-lg shadow-blue-500/25"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50"
               }`}
             >
               Week
             </button>
             <button
-              onClick={() => setViewMode('month')}
+              onClick={() => setViewMode("month")}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                viewMode === 'month'
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-                  : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50'
+                viewMode === "month"
+                  ? "bg-blue-500 text-white shadow-lg shadow-blue-500/25"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50"
               }`}
             >
               Month
@@ -238,7 +246,9 @@ export default function DashboardPage() {
           <TimetableView
             events={events}
             currentDate={currentDate}
-            onAddSchedule={addSchedule}
+            semesterId={semesterId}
+            onSemesterChange={setSemesterId}
+            onAddSchedule={handleAddSchedule}
             onDeleteSchedule={deleteSchedule}
             onUpdateSchedule={updateSchedule}
             onChangeWeek={changeWeek}

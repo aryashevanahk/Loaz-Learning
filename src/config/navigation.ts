@@ -26,44 +26,44 @@ export const mainNavItems: NavItem[] = [
   },
   {
     title: 'Semesters', // Menu baru
-    href: '/dashboard/semesters',
+    href: '/semesters',
     icon: Layers,
   },
   {
     title: 'Timetable',
-    href: '/dashboard/timetable',
+    href: '/timetable',
     icon: Calendar,
   },
   {
     title: 'Courses',
-    href: '/dashboard/courses',
+    href: '/courses',
     icon: BookOpen,
     badge: 5,
   },
   {
     title: 'Analytics',
-    href: '/dashboard/analytics',
+    href: '/analytics',
     icon: BarChart3,
   },
   {
     title: 'Messages',
-    href: '/dashboard/messages',
+    href: '/messages',
     icon: MessageSquare,
     badge: 3,
   },
   {
     title: 'Projects',
-    href: '/dashboard/projects',
+    href: '/projects',
     icon: FolderOpen,
     children: [
       {
         title: 'Active Projects',
-        href: '/dashboard/projects/active',
+        href: '/projects/active',
         icon: FolderOpen,
       },
       {
         title: 'Archived',
-        href: '/dashboard/projects/archived',
+        href: '/projects/archived',
         icon: FolderOpen,
       },
     ],
