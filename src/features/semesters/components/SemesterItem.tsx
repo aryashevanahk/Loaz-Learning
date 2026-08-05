@@ -3,6 +3,8 @@
  * Menampilkan satu item semester dalam bentuk card
  */
 
+'use client';
+
 import { Semester } from '../types/semester.types';
 import { formatDate } from '@/utils/formatDate';
 import { cn } from '@/lib/utils';
@@ -42,19 +44,28 @@ export function SemesterItem({
     return 'In Progress';
   };
 
+  const getStatusBadgeVariant = () => {
+    if (semester.isActive) return 'default';
+    const now = new Date();
+    if (now < semester.startDate) return 'secondary';
+    if (now > semester.endDate) return 'outline';
+    return 'secondary';
+  };
+
   return (
     <Card className={cn(
-      'transition-all duration-200 hover:shadow-md',
-      isActive && 'ring-2 ring-blue-500/50 dark:ring-blue-400/50'
+      'group transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5',
+      'bg-white dark:bg-gray-800/50 border-gray-200/50 dark:border-gray-700/50',
+      isActive && 'ring-2 ring-blue-500/50 dark:ring-blue-400/50 shadow-lg shadow-blue-500/10'
     )}>
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
                 {semester.name}
               </h3>
-              <Badge variant={semester.isActive ? 'default' : 'secondary'}>
+              <Badge variant={getStatusBadgeVariant()} className="shrink-0">
                 {getStatusText()}
               </Badge>
             </div>
@@ -63,7 +74,7 @@ export function SemesterItem({
             </p>
           </div>
           <div className={cn(
-            'h-3 w-3 rounded-full',
+            'h-3 w-3 rounded-full shrink-0 mt-1.5',
             getStatusColor()
           )} />
         </div>
@@ -71,44 +82,50 @@ export function SemesterItem({
 
       <CardContent className="pb-3 space-y-2">
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-          <Calendar className="h-4 w-4 text-gray-400" />
-          <span>
-            {formatDate(semester.startDate)} - {formatDate(semester.endDate)}
+          <Calendar className="h-4 w-4 text-gray-400 shrink-0" />
+          <span className="truncate">
+            {formatDate(semester.startDate)} — {formatDate(semester.endDate)}
           </span>
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-          <BookOpen className="h-4 w-4 text-gray-400" />
+          <BookOpen className="h-4 w-4 text-gray-400 shrink-0" />
           <span>Semester {semester.semesterNumber}</span>
+          {semester.isActive && (
+            <Badge variant="outline" className="ml-auto text-[10px] text-green-600 dark:text-green-400 border-green-200 dark:border-green-800">
+              Active
+            </Badge>
+          )}
         </div>
       </CardContent>
 
       <CardFooter className="flex items-center justify-end gap-2 pt-0">
         {!semester.isActive && (
           <Button
-            variant="outline"
+            variant="ghost"
             size="sm"
             onClick={() => onSetActive(semester.id)}
-            className="text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/20"
+            className="text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/20 gap-1"
           >
-            <CheckCircle className="h-3.5 w-3.5 mr-1" />
+            <CheckCircle className="h-3.5 w-3.5" />
             Set Active
           </Button>
         )}
         <Button
-          variant="outline"
+          variant="ghost"
           size="sm"
           onClick={() => onEdit(semester)}
+          className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20 gap-1"
         >
-          <Edit className="h-3.5 w-3.5 mr-1" />
+          <Edit className="h-3.5 w-3.5" />
           Edit
         </Button>
         <Button
-          variant="destructive"
+          variant="ghost"
           size="sm"
           onClick={() => onDelete(semester.id)}
-          className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+          className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 gap-1"
         >
-          <Trash2 className="h-3.5 w-3.5 mr-1" />
+          <Trash2 className="h-3.5 w-3.5" />
           Delete
         </Button>
       </CardFooter>
