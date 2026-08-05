@@ -7,6 +7,7 @@ import {
   MessageSquare,
   FolderOpen,
   HelpCircle,
+  Layers, // Tambahkan icon untuk Semesters
 } from 'lucide-react';
 
 export interface NavItem {
@@ -22,6 +23,11 @@ export const mainNavItems: NavItem[] = [
     title: 'Dashboard',
     href: '/dashboard',
     icon: LayoutDashboard,
+  },
+  {
+    title: 'Semesters', // Menu baru
+    href: '/dashboard/semesters',
+    icon: Layers,
   },
   {
     title: 'Timetable',

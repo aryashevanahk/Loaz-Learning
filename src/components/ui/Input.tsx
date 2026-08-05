@@ -5,8 +5,9 @@ import { cn } from "@/lib/utils";
 
 interface InputProps extends React.ComponentPropsWithoutRef<"input"> {
   label?: string;
-  containerClassName?: string;
+  id?: string;
   labelClassName?: string;
+  containerClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -14,10 +15,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     {
       className,
       label,
-      containerClassName,
-      labelClassName,
       id,
       type,
+      labelClassName,
+      containerClassName,
       ...props
     },
     ref,
@@ -53,6 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
   },
 );
+
 Input.displayName = "Input";
 
 export { Input };
