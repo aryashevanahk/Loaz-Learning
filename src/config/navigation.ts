@@ -3,11 +3,16 @@ import {
   Calendar,
   BookOpen,
   Settings,
-  BarChart3,
-  MessageSquare,
   FolderOpen,
   HelpCircle,
-  Layers, // Tambahkan icon untuk Semesters
+  Layers,
+  GraduationCap,
+  Briefcase,
+  Users,
+  FileText,
+  Award,
+  StickyNote,
+  Sparkles,
 } from 'lucide-react';
 
 export interface NavItem {
@@ -25,46 +30,73 @@ export const mainNavItems: NavItem[] = [
     icon: LayoutDashboard,
   },
   {
-    title: 'Semesters', // Menu baru
-    href: '/semesters',
-    icon: Layers,
-  },
-  {
-    title: 'Timetable',
-    href: '/timetable',
-    icon: Calendar,
-  },
-  {
-    title: 'Courses',
-    href: '/courses',
-    icon: BookOpen,
-    badge: 5,
-  },
-  {
-    title: 'Analytics',
-    href: '/analytics',
-    icon: BarChart3,
-  },
-  {
-    title: 'Messages',
-    href: '/messages',
-    icon: MessageSquare,
-    badge: 3,
-  },
-  {
-    title: 'Projects',
-    href: '/projects',
-    icon: FolderOpen,
+    title: 'Academic',
+    href: '/academic',
+    icon: GraduationCap,
     children: [
       {
-        title: 'Active Projects',
-        href: '/projects/active',
+        title: 'Semesters',
+        href: '/academic/semesters',
+        icon: Layers,
+      },
+      {
+        title: 'Timetable',
+        href: '/academic/timetable',
+        icon: Calendar,
+      },
+      {
+        title: 'Courses',
+        href: '/academic/courses',
+        icon: BookOpen,
+      },
+      {
+        title: 'Assignments',
+        href: '/academic/assignments',
+        icon: FileText,
+      },
+    ],
+  },
+  {
+    title: 'Learning',
+    href: '/learning',
+    icon: Sparkles,
+    children: [
+      {
+        title: 'Short Courses',
+        href: '/learning/short-courses',
+        icon: BookOpen,
+      },
+      {
+        title: 'Projects',
+        href: '/learning/projects',
+        icon: Briefcase,
+      },
+      {
+        title: 'Certificates',
+        href: '/learning/certificates',
+        icon: Award,
+      },
+      {
+        title: 'Notes',
+        href: '/learning/notes',
+        icon: StickyNote,
+      },
+    ],
+  },
+  {
+    title: 'Organizations',
+    href: '/organizations',
+    icon: Users,
+    children: [
+      {
+        title: 'Workspaces',
+        href: '/organizations/workspaces',
         icon: FolderOpen,
       },
       {
-        title: 'Archived',
-        href: '/projects/archived',
-        icon: FolderOpen,
+        title: 'Files',
+        href: '/organizations/files',
+        icon: FileText,
       },
     ],
   },
@@ -73,12 +105,12 @@ export const mainNavItems: NavItem[] = [
 export const bottomNavItems: NavItem[] = [
   {
     title: 'Settings',
-    href: '/dashboard/settings',
+    href: '/settings',
     icon: Settings,
   },
   {
     title: 'Help',
-    href: '/dashboard/help',
+    href: '/help',
     icon: HelpCircle,
   },
 ];

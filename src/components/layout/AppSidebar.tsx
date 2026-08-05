@@ -43,18 +43,74 @@ import { mainNavItems, bottomNavItems } from "@/config/navigation";
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const [expandedItems, setExpandedItems] = React.useState<string[]>([]);
+  const [expandedItems, setExpandedItems] = React.useState<string[]>(() => {
+    const initialExpanded: string[] = [];
+    mainNavItems.forEach((item) => {
+      if (item.children) {
+        const hasActiveChild = item.children.some((child) =>
+          pathname?.startsWith(child.href)
+        );
+        if (hasActiveChild) {
+          initialExpanded.push(item.title);
+        }
+      }
+    });
+    return initialExpanded;
+  });
+
+  const getItemsThatShouldExpand = React.useCallback((currentPath: string) => {
+    const shouldExpand: string[] = [];
+    mainNavItems.forEach((item) => {
+      if (item.children) {
+        const hasActiveChild = item.children.some((child) =>
+          currentPath?.startsWith(child.href)
+        );
+        if (hasActiveChild) {
+          shouldExpand.push(item.title);
+        }
+      }
+    });
+    return shouldExpand;
+  }, []);
+
+  const isInitialMount = React.useRef(true);
+
+  React.useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    const shouldExpand = getItemsThatShouldExpand(pathname || '');
+    
+    setExpandedItems((prev) => {
+      const newExpanded = [...prev];
+      let changed = false;
+      
+      shouldExpand.forEach((item) => {
+        if (!newExpanded.includes(item)) {
+          newExpanded.push(item);
+          changed = true;
+        }
+      });
+      
+      return changed ? newExpanded : prev;
+    });
+  }, [pathname, getItemsThatShouldExpand]);
 
   const toggleExpand = (title: string) => {
     setExpandedItems((prev) =>
       prev.includes(title)
         ? prev.filter((item) => item !== title)
-        : [...prev, title],
+        : [...prev, title]
     );
   };
 
   const isActive = (href: string) => {
-    return pathname === href || pathname?.startsWith(href + "/");
+    if (href === "/") {
+      return pathname === href;
+    }
+    return pathname?.startsWith(href) || pathname === href;
   };
 
   // Format today's date
@@ -142,7 +198,7 @@ export function AppSidebar() {
           </div>
         </div>
 
-        {/* Main Navigation */}
+        {/* Main Navigation - Menggunakan render prop */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-[10px] font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500">
             Main Menu
@@ -158,7 +214,7 @@ export function AppSidebar() {
                         className={cn(
                           "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
                           isActive(item.href) &&
-                            "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
+                            "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
                         )}
                       >
                         <item.icon className="h-4 w-4" />
@@ -171,42 +227,44 @@ export function AppSidebar() {
                         <ChevronRight
                           className={cn(
                             "h-4 w-4 transition-transform",
-                            expandedItems.includes(item.title) && "rotate-90",
+                            expandedItems.includes(item.title) && "rotate-90"
                           )}
                         />
                       </SidebarMenuButton>
                       {expandedItems.includes(item.title) && (
                         <SidebarMenuSub>
-                          {item.children.map((child) => (
-                            <SidebarMenuSubItem key={child.title}>
-                              <SidebarMenuSubButton
-                                render={
-                                  <Link
-                                    href={child.href}
-                                    className="flex items-center gap-2 w-full"
-                                  >
-                                    <child.icon className="h-3 w-3" />
-                                    <span>{child.title}</span>
-                                  </Link>
-                                }
-                                className={cn(
-                                  "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
-                                  isActive(child.href) &&
-                                    "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
-                                )}
-                              />
-                            </SidebarMenuSubItem>
-                          ))}
+                          {item.children.map((child) => {
+                            const isChildActive = isActive(child.href);
+                            return (
+                              <SidebarMenuSubItem key={child.title}>
+                                <SidebarMenuSubButton
+                                  className={cn(
+                                    "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
+                                    isChildActive &&
+                                      "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                                  )}
+                                  render={
+                                    <Link href={child.href} className="flex items-center gap-2 w-full">
+                                      <child.icon className="h-3 w-3" />
+                                      <span>{child.title}</span>
+                                    </Link>
+                                  }
+                                />
+                              </SidebarMenuSubItem>
+                            );
+                          })}
                         </SidebarMenuSub>
                       )}
                     </>
                   ) : (
                     <SidebarMenuButton
+                      className={cn(
+                        "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
+                        isActive(item.href) &&
+                          "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                      )}
                       render={
-                        <Link
-                          href={item.href}
-                          className="flex items-center gap-2 w-full"
-                        >
+                        <Link href={item.href} className="flex items-center gap-2 w-full">
                           <item.icon className="h-4 w-4" />
                           <span className="flex-1">{item.title}</span>
                           {item.badge && (
@@ -216,11 +274,6 @@ export function AppSidebar() {
                           )}
                         </Link>
                       }
-                      className={cn(
-                        "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
-                        isActive(item.href) &&
-                          "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
-                      )}
                     />
                   )}
                 </SidebarMenuItem>
@@ -254,20 +307,17 @@ export function AppSidebar() {
           {bottomNavItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
+                className={cn(
+                  "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
+                  isActive(item.href) &&
+                    "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                )}
                 render={
-                  <Link
-                    href={item.href}
-                    className="flex items-center gap-2 w-full"
-                  >
+                  <Link href={item.href} className="flex items-center gap-2 w-full">
                     <item.icon className="h-4 w-4" />
                     <span>{item.title}</span>
                   </Link>
                 }
-                className={cn(
-                  "hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-all",
-                  isActive(item.href) &&
-                    "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
-                )}
               />
             </SidebarMenuItem>
           ))}
